@@ -8,13 +8,13 @@ The CCPR (control chart pattern recognition) coding explores algorithmic methods
 
 For the CCPR study, this respository contains the following code:
 
-CNN_Single_Run.py Code for two-class (abnormal/normal) classification using specified settings for window length, trend type, and trend size.
+**CNN_Single_Run.py** Code for two-class (abnormal/normal) classification using specified settings for window length, trend type, and trend size.
 
-CNN_Looped_for_Gmean_Specificity.py Code for two-class (abnormal/normal) classification to generate a heatmap of G-mean values to determine separable, partially separable, and nonseparable regions (window length and trend size) for each trend type.
+**CNN_Looped_for_Gmean_Specificity.py** Code for two-class (abnormal/normal) classification to generate a heatmap of G-mean values to determine separable, partially separable, and nonseparable regions (window length and trend size) for each trend type.
 
-UCR-CNN.py Code for analysis of UCR Wafter Time Series data.
+**UCR-CNN.py** Code for analysis of UCR Wafter Time Series data.
 
-CNN_Multiclass_Generated_Data_Keras.py Code for multiclass classification of generated data.
+**CNN_Multiclass_Generated_Data_Keras.py** Code for multiclass classification of generated data.
 
 # Humanitarian Fuel Demand Prediction
 
@@ -22,7 +22,8 @@ The humanitarian fuel demand coding explores algorithmic methods for improved se
 
 For the fuel demand study, the repository contains the following code:
 
-lstm_japan.py  Non-resampled Japan sequence data LSTM
-lstm_katrina.py Non-resampled Katrina sequence data LSTM
+**lstm_japan.py**  Non-resampled Japan sequence data LSTM
+
+**lstm_katrina.py** Non-resampled Katrina sequence data LSTM
 
 Important Note: Data access to the Humanitarian Fuel dataset must be requested directly from the repository owner (dfuqua@nmsu.edu) 
