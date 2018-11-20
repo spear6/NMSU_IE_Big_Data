@@ -18,12 +18,4 @@ For the CCPR study, this respository contains the following code:
 
 # Humanitarian Fuel Demand Prediction
 
-The humanitarian fuel demand coding explores algorithmic methods for improved sequence prediction regression modeling of Defense Logistics Agency (DLA) data from the Japan Tsunmai (2011) and Hurricane Katrina (2005) relief efforts.  This coding uses LSTM (long-short term memory) recurrent neural networks where data is resampled using blocked cross-validation
-
-For the fuel demand study, the repository contains the following code:
-
-**lstm_japan.py**  Non-resampled Japan sequence data LSTM
-
-**lstm_katrina.py** Non-resampled Katrina sequence data LSTM
-
-Important Note: Data access to the Humanitarian Fuel dataset must be requested directly from the repository owner (dfuqua@nmsu.edu) 
+To be published upon journal submision
