@@ -16,13 +16,13 @@ Creates cost weighting in loss layer of convolutional neural network
 
 **CNN_Looped_for_Gmean_Specificity.py** Code for two-class (abnormal/normal) classification to generate a heatmap of G-mean values to determine separable, partially separable, and nonseparable regions (window length and trend size) for each trend type.
 
-ser defined method: weighted_mse
+User defined method: weighted_mse
 
 Creates cost weighting in loss layer of convolutional neural network
 
 **UCR-CNN.py** Code for analysis of UCR Wafter Time Series data.
 
-ser defined method: weighted_mse
+User defined method: weighted_mse
 
 Creates cost weighting in loss layer of convolutional neural network
 
