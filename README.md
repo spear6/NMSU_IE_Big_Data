@@ -26,3 +26,23 @@ User defined method: weighted_mse
 
 Creates cost weighting in loss layer of convolutional neural network
 
+# Short Sequence LSTM with modified RPCA preprocessing
+
+This block of coding is built specifically to address short sequence prediction using a novel modified RPCA preprocessing and walk-forward validation teamed with an LSTM.  I use databases on humanitarian supply chain data (fuel) collected from the Defense Logistics Agency (DLA) from Hurricane Katrina (2005) and the Japan Tsunami (2011).  We also utilize two UCI databases (GNFUV and ISE).
+
+**Katrina_RPCA.py** (code for implementing the preprocessing with LSTM using walk forward validation.
+
+User defined method: R_pca (modified from https://github.com/dganguli/robust-pca)
+
+User defined method: tanh_mod (buffers sparse set input during initial training)
+
+User defined method: mahalnobis_dis (searches for sparse set outliers using Mahalanobis distance calculations)
+
+User defined method: var_model (searches for sparse set outliers using Mahalanobis distance calculations)
+
+User defined method: max_eigenvalues (searches for sparse set outliers using comparison of maximum eigenvalues)
+
+User defined method: one_class (preprocessing of sparse set using unsupervised one-class SVM)
+
+
+
