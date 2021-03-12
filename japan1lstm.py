@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Wed Mar 27 13:33:58 2019
+
+@author: donov
+"""
+
 
 from __future__ import division, print_function
 
@@ -151,14 +158,12 @@ def one_class(S):
     predicted=np.reshape(predicted,(predicted.shape[0],1))
     S = predicted*S
     return S
-    
 
+import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 from sklearn.model_selection import TimeSeriesSplit
-from sklearn.preprocessing import MinMaxScaler, OneHotEncoder
-from scipy.spatial import distance
-from sklearn.svm import OneClassSVM
+from sklearn.preprocessing import MinMaxScaler
 from keras.models import Sequential
 from keras.layers import Dense
 from keras.layers import LSTM
@@ -166,42 +171,39 @@ import keras as K
 import keras.backend as K
 
 # generate low rank synthetic data
-katrina = pd.read_csv('katrina_fuel2_pca.csv')
-katrina1 = katrina.values
-katrina1 = katrina1.astype('float32')
+japan = pd.read_csv('japan_fuel2_pca.csv')
+japan1 = japan.values
+japan1 = japan1[0:199,]
+japan1 = japan1.astype('float32')
 
-# normalize the katrina1
+# normalize the japan1
 scaler = MinMaxScaler(feature_range=(0, 1))
-katrina1 = scaler.fit_transform(katrina1)
-X = katrina1
-y = katrina1[:,0]
+japan1 = scaler.fit_transform(japan1)
+X = japan1
+y = japan1[:,0]
 
 
-tscv = TimeSeriesSplit(n_splits=185)
-
-#tuning factors
+tscv = TimeSeriesSplit(n_splits=198)
 rho = 0.1 #weighting factor for sparse set
-tao =0.05
-a=20
-b=5
+tao = 0.05
 
-#empty set for concat
 pred_vec=[]
 
 for train_index, test_index in tscv.split(X):
-    X_train, X_test = X[train_index-1], X[test_index]
-    y_train, y_test = y[train_index-1], y[test_index]
- 
+    X_train, X_test = X[train_index], X[test_index]
+    y_train, y_test = y[train_index], y[test_index]
+
     rpca = R_pca(X_train) #genertes S and L arrays for X_train
     L, S = rpca.fit(max_iter=10000)
     S = np.abs(S)
-#   
-    if np.size(S,axis=0)<a:
-       tanh_mod(S,L,X_train,rho)
-    
+   
+    if np.size(S,axis=0)<20:
+        tanh_mod(S,rho)
+        
     else:
-        mahalanobis_dis(S,tao)
-    X_train = np.add(L,S)
+       mahalanobis_dis(S,tao)   
+   
+    X_train = np.add(L,S)    
     
     X_train = np.reshape(X_train, (X_train.shape[0], X_train.shape[1], 1))
     X_test = np.reshape(X_test, (X_test.shape[0], X_test.shape[1], 1))
@@ -211,7 +213,7 @@ for train_index, test_index in tscv.split(X):
     model.add(Dense(1))
     model.compile(loss='mae', optimizer='adam')
 # fit network
-    history = model.fit(X_train, y_train, epochs=200, batch_size=5, validation_data=(X_test, y_test), verbose=0, shuffle=False)
+    history = model.fit(X_train, y_train, epochs=200, batch_size=50, validation_data=(X_test, y_test), verbose=0, shuffle=False)
 
     testPredict = model.predict(X_test)
     
@@ -220,7 +222,7 @@ for train_index, test_index in tscv.split(X):
     K.clear_session()
 # plot history
     
-true_vec = y[1:186,]
+true_vec = y[1:199,]
 
 def rmse(pred_vec, true_vec):
     return np.sqrt(((pred_vec - true_vec) ** 2).mean())
@@ -239,9 +241,13 @@ def R2adj(pred_vec,true_vec):
 #    true_vec, pred_vec = np.array(true_vec), np.array(pred_vec)
 #    return np.mean(np.abs((true_vec - pred_vec) / true_vec)) * 100
 
+#pred_vec = np.mean(true_vec, axis=0)
+ 
+
 
 rmse_val = rmse(np.array(pred_vec), np.array(true_vec))
 print("rms error is: " + str(rmse_val))
+
 R2adjval = R2adj(pred_vec,true_vec)
 print("The R2adj is: " + str(R2adjval))
 
@@ -249,12 +255,8 @@ print("The R2adj is: " + str(R2adjval))
 #print("The MAPE is: " + str(MAPEval))
 
 
-plt.plot(pred_vec, linestyle='dashdot', label='Predicted')
-plt.plot(true_vec, linestyle='solid', label='True')
-plt.legend(loc='upper left')
-plt.title('Actual versus Predicted Response (Demand)' )
-plt.xlabel('Observation')
-plt.ylabel('Scaled Response Variable')
+plt.plot(pred_vec)
+plt.plot(true_vec)
 plt.show()
 
 #plt.plot(S[:,0])
@@ -262,9 +264,6 @@ plt.show()
 
 
 plt.plot(np.square(true_vec-pred_vec))
-plt.title('Error Plot for $(True-Predicted)^2$ for Response' )
-plt.xlabel('Observation')
-plt.ylabel('Squared Error')
 plt.show()
 
 bins = np.arange(-100, 100, 0.05) # fixed bin size
@@ -272,28 +271,11 @@ bins = np.arange(-100, 100, 0.05) # fixed bin size
 plt.xlim([min(S[:,0])-0.05, max(S[:,0])+0.05])
 
 plt.hist(S[: ,0], bins=bins, alpha=0.5)
-plt.title('RPCA Sparse Set Distribution (Fixed bin size)')
-plt.xlabel('Response Variable Only (bin size = 0.0.5)')
-plt.ylabel('Count')
+plt.title('Katrina Outlier Distribution (fixed bin size)')
+plt.xlabel('variable X (bin size = 0.0.5)')
+plt.ylabel('count')
 
 plt.show()
 
 plt.plot(S[:,0])
-plt.title('RPCA Sparse ($S_0$) Set of Fuel Demand' )
-plt.xlabel('Observation')
-plt.ylabel('Scaled Response Variable')
-plt.ylim(0, 1.0)
-plt.show()
-
-plt.plot(L[:,0])
-plt.plot(L[:,2]+1)
-plt.plot(L[:,3]+2)
-plt.plot(L[:,4]+3)
-plt.plot(L[:,5]+4)
-plt.plot(L[:,6]+5)
-plt.plot(L[:,7]+6)
-plt.title('RPCA Low Rank ($L_0$) Set of Fuel Demand' )
-plt.xlabel('Observation')
-plt.ylabel('Scaled Response Variable')
-plt.ylim(0, 7.0)
-plt.show()
+plt.show
