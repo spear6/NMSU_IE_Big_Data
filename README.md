@@ -1,6 +1,6 @@
 # NMSU_IE_Big_Data
 
-This repository contains the code relevant to my doctoral research program at NMSU with faculty advisor Talayeh Razzaghi. The Python coding is intended to explore algorithmic methods related to the research program.  All code written in Python with Tensorflow/Keras backend.  
+This repository contains the code relevant to my research program at NMSU. The Python coding is intended to explore algorithmic methods related to the research program.  All code written in Python with Tensorflow/Keras backend.  
 
  # CCPR Classification with Imbalance
 
